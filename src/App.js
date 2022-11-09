@@ -123,37 +123,53 @@ function App() {
     const { ethereum } = window;
     const accounts = await ethereum.request({ method: 'eth_accounts' });
     const account = await accounts[0];
-    const options = {method: 'GET'};
+    //const options = {method: 'GET'};
     const url_api = "https://testnets-api.opensea.io/api/v1/assets?"
-    let url_img = [];
+    //let url_img = [];
 
     try {
-      await fetch(url_api + 'owner=' + account 
-                  + '&asset_contract_addresses=' + contractAddressA
-                  + '&order_direction=desc&offset=0&limit=5&include_orders=false', 
-                  options)
-          .then (response => response.json())
-          .then(function (response) {
-            const assets = response;
 
-            for (let i=0;i<assets.length;i++){
-              url_img.add(assets[i].image_url);
-              cmp++;
-              console.log(assets[i].image_url)
+        const data = null;
+
+        const xhr = new XMLHttpRequest();
+        let resp;
+        xhr.withCredentials = true;
+        
+        xhr.addEventListener('readystatechange', function () {
+          if (this.readyState === this.DONE) {
+            //console.log(this.responseText);
+            resp = this.responseText;
+            let j_resp = JSON.parse(resp);
+            let assets = j_resp['assets'];
+            console.log(assets);
+            //cmp = assets.length;
+            //console.log(cmp);
+            document.getElementById('images-content').innerHTML = "";
+            for (let i=0; i < 5; i++){
+              //url_img.push(assets[i].image_url);
+              var img = new Image();
+              img.src = assets[i].image_url;
+              img.className = "NFT-image";
+              document.getElementById('images-content').appendChild(img);
             }
-          })
-          .then(response => console.log(response))
-          .catch(err => console.error(err));
+          }
+        });
+        
+        xhr.open('GET', url_api + 'owner=' + account + '&asset_contract_address=' + contractAddressA + '&order_by=sale_date&limit=5');
+        
+        xhr.send(data);
+
+        //console.log(url_img);
 
     } catch (error) {
       console.log(error);
     }
     
-    return(
+    /*return(
       <ul>
         {await url_img.map((url) => < ImageNft src = {url} />)}
       </ul>
-    )
+    )*/
 }
   
   return (
@@ -175,6 +191,8 @@ function App() {
         <button onClick={f => callAPI()} className='cta-button mint-nft-button'>
           Afficher les NFT
         </button>
+        <div id = "images-content">
+        </div>
       </div>
     </div>
   )
