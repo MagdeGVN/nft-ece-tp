@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 // Changer ici l'adresse du contrat pour mettre le votre 
 const contractAddressA = "0x3d95E4336fB95862DC8a5F2608c286025E183180";
 
-let cmp = 3;
+let cmp = 0;
 
 function App() {
   const [currentAccount, setCurrentAccount] = useState(null);
@@ -49,12 +49,12 @@ function App() {
   }
 
   const mintNftHandler = async (contractAddress, owner_required) => {
-    
     try {
-      const { ethereum } = window;
       if (cmp > 2 && !owner_required) {
         throw new Error('max');
       }
+      const { ethereum } = window;
+      
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
@@ -65,6 +65,8 @@ function App() {
 
         console.log("Mining... please wait");
         await nftTxn.wait();
+        if (!owner_required)
+        cmp++;
 
         console.log(`Mined, see transaction: https://goerli.etherscan.io/tx/${nftTxn.hash}`);
 
@@ -114,11 +116,11 @@ function App() {
   useEffect(() => {
     checkWalletIsConnected();
   }, [])
-
+/*
   function ImageNft(props) {
     return <img src = {props.src} alt = ""/>;
   }
-
+*/
   const callAPI = async () => {
     const { ethereum } = window;
     const accounts = await ethereum.request({ method: 'eth_accounts' });
