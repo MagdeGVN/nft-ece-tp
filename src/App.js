@@ -69,9 +69,8 @@ function App() {
 
     } catch (err) {
       console.log(err);
-      //if (err.prototype.message === "TypeError: nftContract.ownerMint is not a function")
-        // alert("Vous n'etes pas propriétaire de ce contrat");
-        alert(err);
+      if (err.message === "nftContract.ownerMint is not a function")
+        alert("Vous n'etes pas propriétaire de ce contrat");
     }
   }
 
