@@ -98,7 +98,7 @@ function App() {
         <p>
           Ce contrat permet d'obtenir une NFT pokémon. <br/>
           Il est utilisable 3 fois. Une fois cette limite atteinte, il n'est plus possible d'obtenir de NFT gratuite avec ce contrat. <br/>
-          Pour obtenir d'autre NFT pokémon, vous pouvez utiliser le contrat payant.
+          Pour obtenir d'autre NFT pokémon, vous pouvez utiliser un contrat vous appartenant.
         </p>
         <button onClick={f => mintNftHandler(contractAddressA, false)} className='cta-button mint-nft-button'>
           Mint NFT 
