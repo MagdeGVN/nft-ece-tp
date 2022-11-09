@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 // Changer ici l'adresse du contrat pour mettre le votre 
 const contractAddressA = "0x3d95E4336fB95862DC8a5F2608c286025E183180";
 
-let cmp;
+let cmp = 3;
 
 function App() {
   const [currentAccount, setCurrentAccount] = useState(null);
@@ -49,9 +49,12 @@ function App() {
   }
 
   const mintNftHandler = async (contractAddress, owner_required) => {
+    
     try {
       const { ethereum } = window;
-
+      if (cmp > 2 && !owner_required) {
+        throw new Error('max');
+      }
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
@@ -64,7 +67,6 @@ function App() {
         await nftTxn.wait();
 
         console.log(`Mined, see transaction: https://goerli.etherscan.io/tx/${nftTxn.hash}`);
-        console.log("cmp = " + cmp)
 
       } else {
         console.log("Ethereum object does not exist");
@@ -74,6 +76,8 @@ function App() {
       console.log(err);
       if (err.code === "UNPREDICTABLE_GAS_LIMIT")
         alert("Vous n'etes pas propriétaire de ce contrat");
+      if(err.message === "max")
+      alert("Vous avez atteint la limite");
     }
   }
 
@@ -94,15 +98,9 @@ function App() {
           Il est utilisable 3 fois. Une fois cette limite atteinte, il n'est plus possible d'obtenir de NFT gratuite avec ce contrat. <br/>
           Pour obtenir d'autre NFT pokémon, vous pouvez utiliser le contrat payant.
         </p>
-        {(cmp>2) ? 
-          <button onClick={f => mintNftHandler(contractAddressA, false)} className='cta-button mint-nft-button' disabled>
-            Mint NFT 
-          </button> :
-          <button onClick={f => mintNftHandler(contractAddressA, false)} className='cta-button mint-nft-button'>
+        <button onClick={f => mintNftHandler(contractAddressA, false)} className='cta-button mint-nft-button'>
           Mint NFT 
         </button>
-      }
-        
         <br/><br/>
         <h2>Contrat disponible uniquement pour son propriétaire</h2>
         <p>Ce contrat permet d'obtenir une NFT pokémon !</p>
@@ -137,7 +135,6 @@ function App() {
           .then (response => response.json())
           .then(function (response) {
             const assets = response;
-            cmp = 0;
 
             for (let i=0;i<assets.length;i++){
               url_img.add(assets[i].image_url);
@@ -175,7 +172,7 @@ function App() {
         Cela permet de voir les derniers NFT mintés dans cette collection
       </p>
       <div>
-        <button onClick={f => callAPI()} className='cta-button mint-nft-buttonB'>
+        <button onClick={f => callAPI()} className='cta-button mint-nft-button'>
           Afficher les NFT
         </button>
       </div>
