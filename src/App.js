@@ -69,7 +69,7 @@ function App() {
 
     } catch (err) {
       console.log(err);
-      if (err.message === "nftContract.ownerMint is not a function")
+      if (err.code === "UNPREDICTABLE_GAS_LIMIT")
         alert("Vous n'etes pas propriétaire de ce contrat");
     }
   }
@@ -85,18 +85,17 @@ function App() {
   const allNTFButton = () => {
     return (
       <div >
-        <h2>Contrat ouvert à tous</h2>
+        <h2>Mintage ouvert à tous</h2>
         <p>
           Ce contrat permet d'obtenir une NFT pokémon. <br/>
-          Il est utilisable 3 fois. Une fois cette limite atteinte, il n'est plus possible d'obtenir de NFT gratuite avec ce contrat. <br/>
-          Pour obtenir d'autre NFT pokémon, vous pouvez utiliser le contrat payant.
+          Il est utilisable 3 fois. Une fois cette limite atteinte, il n'est plus possible d'obtenir de NFT en mintant ce contrat.
         </p>
         <button onClick={f => mintNftHandler(contractAddressA, false)} className='cta-button mint-nft-buttonA'>
           Mint NFT 
         </button>
         <br/><br/>
-        <h2>Contrat disponible uniquement pour son propriétaire</h2>
-        <p>Ce contrat permet d'obtenir une NFT pokémon !</p>
+        <h2>Mintage disponible uniquement pour le owner</h2>
+        <p>Ce contrat permet d'obtenir une NFT pokémon.</p>
         <button onClick={f => mintNftHandler(contractAddressA, true)} className='cta-button mint-nft-buttonB'>
           Mint NFT
         </button>
