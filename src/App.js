@@ -9,7 +9,6 @@ const contractAddressA = "0x3d95E4336fB95862DC8a5F2608c286025E183180";
 let cmp;
 
 function App() {
-
   const [currentAccount, setCurrentAccount] = useState(null);
 
   const checkWalletIsConnected = async () => {
@@ -65,6 +64,7 @@ function App() {
         await nftTxn.wait();
 
         console.log(`Mined, see transaction: https://goerli.etherscan.io/tx/${nftTxn.hash}`);
+        console.log("cmp = " + cmp)
 
       } else {
         console.log("Ethereum object does not exist");
@@ -86,10 +86,6 @@ function App() {
   }
               
   const allNTFButton = () => {
-    let disable = false;
-    if(cmp>2)
-      disable = true;
-
     return (
       <div >
         <h2>Contrat ouvert à tous</h2>
@@ -98,13 +94,19 @@ function App() {
           Il est utilisable 3 fois. Une fois cette limite atteinte, il n'est plus possible d'obtenir de NFT gratuite avec ce contrat. <br/>
           Pour obtenir d'autre NFT pokémon, vous pouvez utiliser le contrat payant.
         </p>
-        <button onClick={f => mintNftHandler(contractAddressA, false)} className='cta-button mint-nft-buttonA' disabled = {disable}>
+        {(cmp>2) ? 
+          <button onClick={f => mintNftHandler(contractAddressA, false)} className='cta-button mint-nft-button' disabled>
+            Mint NFT 
+          </button> :
+          <button onClick={f => mintNftHandler(contractAddressA, false)} className='cta-button mint-nft-button'>
           Mint NFT 
         </button>
+      }
+        
         <br/><br/>
         <h2>Contrat disponible uniquement pour son propriétaire</h2>
         <p>Ce contrat permet d'obtenir une NFT pokémon !</p>
-        <button onClick={f => mintNftHandler(contractAddressA, true)} className='cta-button mint-nft-buttonB'>
+        <button onClick={f => mintNftHandler(contractAddressA, true)} className='cta-button mint-nft-button'>
           Mint NFT
         </button>
       </div>
