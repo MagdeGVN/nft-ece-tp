@@ -98,7 +98,7 @@ function App() {
           Il est utilisable 3 fois. Une fois cette limite atteinte, il n'est plus possible d'obtenir de NFT gratuite avec ce contrat. <br/>
           Pour obtenir d'autre NFT pokémon, vous pouvez utiliser le contrat payant.
         </p>
-        <button onClick={f => mintNftHandler(contractAddressA, false)} className='cta-button mint-nft-buttonA' disable = {disable}>
+        <button onClick={f => mintNftHandler(contractAddressA, false)} className='cta-button mint-nft-buttonA' disabled = {disable}>
           Mint NFT 
         </button>
         <br/><br/>
@@ -124,21 +124,23 @@ function App() {
     const accounts = await ethereum.request({ method: 'eth_accounts' });
     const account = await accounts[0];
     const options = {method: 'GET'};
-    const url_api = "https://testnets-api.opensea.io/api/v1/assets"
+    const url_api = "https://testnets-api.opensea.io/api/v1/assets?"
     let url_img = [];
 
     try {
-      await fetch(url_api + '?owner=' + account 
+      await fetch(url_api + 'owner=' + account 
                   + '&asset_contract_addresses=' + contractAddressA
                   + '&order_direction=desc&offset=0&limit=5&include_orders=false', 
                   options)
-          .then(function(response) {
-            const assets = response.assets;
+          .then (response => response.json())
+          .then(function (response) {
+            const assets = response;
             cmp = 0;
 
-            for (let asset of assets){
-              url_img.add(asset.image_url);
+            for (let i=0;i<assets.length;i++){
+              url_img.add(assets[i].image_url);
               cmp++;
+              console.log(assets[i].image_url)
             }
           })
           .then(response => console.log(response))
@@ -171,7 +173,9 @@ function App() {
         Cela permet de voir les derniers NFT mintés dans cette collection
       </p>
       <div>
-        {f => callAPI()}
+        <button onClick={f => callAPI()} className='cta-button mint-nft-buttonB'>
+          Afficher les NFT
+        </button>
       </div>
     </div>
   )
