@@ -4,7 +4,7 @@ import abi from './contracts/ABI.json';
 import { ethers } from 'ethers';
 
 // Changer ici l'adresse du contrat pour mettre le votre 
-const contractAddressA = "0x2e167a295c11b23a9166906EadbE9d1Ab1369c06";
+const contractAddressA = "0x3d95E4336fB95862DC8a5F2608c286025E183180";
 
 let cmp;
 
