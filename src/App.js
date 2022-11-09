@@ -6,6 +6,7 @@ import { ethers } from 'ethers';
 // Changer ici l'adresse du contrat pour mettre le votre 
 const contractAddressA = "0x2e167a295c11b23a9166906EadbE9d1Ab1369c06";
 
+let cmp;
 
 function App() {
 
@@ -85,6 +86,10 @@ function App() {
   }
               
   const allNTFButton = () => {
+    let disable = false;
+    if(cmp>2)
+      disable = true;
+
     return (
       <div >
         <h2>Contrat ouvert à tous</h2>
@@ -93,7 +98,7 @@ function App() {
           Il est utilisable 3 fois. Une fois cette limite atteinte, il n'est plus possible d'obtenir de NFT gratuite avec ce contrat. <br/>
           Pour obtenir d'autre NFT pokémon, vous pouvez utiliser le contrat payant.
         </p>
-        <button onClick={f => mintNftHandler(contractAddressA, false)} className='cta-button mint-nft-buttonA'>
+        <button onClick={f => mintNftHandler(contractAddressA, false)} className='cta-button mint-nft-buttonA' disable = {disable}>
           Mint NFT 
         </button>
         <br/><br/>
@@ -129,12 +134,13 @@ function App() {
                   options)
           .then(function(response) {
             const assets = response.assets;
+            cmp = 0;
 
             for (let asset of assets){
               url_img.add(asset.image_url);
+              cmp++;
             }
-          } 
-          )
+          })
           .then(response => console.log(response))
           .catch(err => console.error(err));
 
