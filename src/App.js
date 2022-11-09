@@ -3,7 +3,9 @@ import './App.css';
 import abi from './contracts/ABI.json';
 import { ethers } from 'ethers';
 
+// Changer ici l'adresse du contrat pour mettre le votre 
 const contractAddressA = "0x2e167a295c11b23a9166906EadbE9d1Ab1369c06";
+
 
 function App() {
 
@@ -69,9 +71,8 @@ function App() {
 
     } catch (err) {
       console.log(err);
-      //if (err.prototype.message === "TypeError: nftContract.ownerMint is not a function")
-        // alert("Vous n'etes pas propriétaire de ce contrat");
-        alert(err);
+      if (err.code === "UNPREDICTABLE_GAS_LIMIT")
+        alert("Vous n'etes pas propriétaire de ce contrat");
     }
   }
 
@@ -108,24 +109,46 @@ function App() {
   useEffect(() => {
     checkWalletIsConnected();
   }, [])
-/*
-  const callAPI = async () => {
-    const sdk = require('api')('@opensea/v1.0#7dtmkl3ojw4vb');
-    const accounts = await ethereum.request({ method: 'eth_accounts' });
-    const account = accounts[0];
 
-    sdk.retrievingAssetsRinkeby({
-      owner: account,
-      asset_contract_addresses: '0x9ebDb7acdCbCD6D5A15084246Ab3ab8231751d29',
-      order_direction: 'desc',
-      offset: '0',
-      limit: '5',
-      include_orders: 'false'
-    })
-      .then(({ data }) => console.log(data))
-      .catch(err => console.error(err));
+  function ImageNft(props) {
+    return <img src = {props.src} alt = ""/>;
   }
-  */
+
+  const callAPI = async () => {
+    const { ethereum } = window;
+    const accounts = await ethereum.request({ method: 'eth_accounts' });
+    const account = await accounts[0];
+    const options = {method: 'GET'};
+    const url_api = "https://testnets-api.opensea.io/api/v1/assets"
+    let url_img = [];
+
+    try {
+      await fetch(url_api + '?owner=' + account 
+                  + '&asset_contract_addresses=' + contractAddressA
+                  + '&order_direction=desc&offset=0&limit=5&include_orders=false', 
+                  options)
+          .then(function(response) {
+            const assets = response.assets;
+
+            for (let asset of assets){
+              url_img.add(asset.image_url);
+            }
+          } 
+          )
+          .then(response => console.log(response))
+          .catch(err => console.error(err));
+
+    } catch (error) {
+      console.log(error);
+    }
+    
+    return(
+      <ul>
+        {await url_img.map((url) => < ImageNft src = {url} />)}
+      </ul>
+    )
+}
+  
   return (
     <div className='main-app'>
       <h1>Devoir maison Blockchain OCRES</h1>
@@ -136,6 +159,13 @@ function App() {
       </p>
       <div>
         {currentAccount ? allNTFButton() : connectWalletButton()}
+      </div>
+      <h2>NFT de la collection en votre pocession</h2>
+      <p>
+        Cela permet de voir les derniers NFT mintés dans cette collection
+      </p>
+      <div>
+        {f => callAPI()}
       </div>
     </div>
   )
