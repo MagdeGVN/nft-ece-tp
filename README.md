@@ -2,7 +2,7 @@
 Fait par Magdeleine GAUVAIN et Margaux MENGONI
 
 ## Introduction et détails du projet
-Ce site permet de minté des NFT pokémon. L'idée nous est venu de nos souvenir de cours de récrée. En effet, les **NFT** permettent de de retrouver dans le monde dématérialiser le plaisir de la collection d'objet unique et rare.
+Ce site permet de minté des NFT pokémon. L'idée nous est venu de nos souvenir de cours de récrée. En effet, les **NFT** permettent de de retrouver dans le monde dématérialiser le plaisir de la collection d'objet unique et rare. La première etape étant de créer ces NFT, nous avons décidé de faire une plateforme à cet effet.
 
 # Guide d'utilisation
 ## Lancer l'app
@@ -22,7 +22,8 @@ L'application guide son utilisateur. Chaque action est expliquer par un texte.
 Rien de plus simple, il suffit de cliquer sur le bouton et accépter la connection dans **Metamask**.
 
 ### 2) Minter des NFT
-Pour ce faire, il faut cliquer sur l'un des 2 premiers boutons (Minter NFT).
+Pour ce faire, il faut cliquer sur l'un des 2 premiers boutons (Minter NFT). 
+Attention, il n'est pas possible de minter plus de 300 nft dans cette collection.
 
 Leurs particularités sont détailées dans leur description.
 
