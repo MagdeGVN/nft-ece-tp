@@ -73,6 +73,13 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "ownerMint",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
